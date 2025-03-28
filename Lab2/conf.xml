@@ -1,0 +1,434 @@
+<hazelcast xmlns="http://www.hazelcast.com/schema/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.hazelcast.com/schema/config 
+http://www.hazelcast.com/schema/config/hazelcast-config-5.4.xsd">
+     <cluster-name>lab1</cluster-name>
+     <management-center scripting-enabled="false" console-enabled="false" data-access-enabled="true"/>
+     <properties>
+          <property name="hazelcast.socket.bind.any">true</property>
+     </properties>
+     <security enabled="false">
+          <client-block-unmapped-actions>true</client-block-unmapped-actions>
+     </security>
+     <network>
+          <public-address>192.168.0.105:5701</public-address>
+          <port port-count="100" auto-increment="true">5701</port>
+          <reuse-address>true</reuse-address>
+          <outbound-ports>
+               <ports>0</ports>
+          </outbound-ports>
+          <join>
+               <auto-detection enabled="true"/>
+               <multicast enabled="false">
+                    <multicast-group>224.2.2.3</multicast-group>
+                    <multicast-port>54327</multicast-port>
+                    <multicast-timeout-seconds>2</multicast-timeout-seconds>
+                    <multicast-time-to-live>32</multicast-time-to-live>
+               </multicast>
+               <tcp-ip enabled="false" connection-timeout-seconds="5">
+                    <member-list>
+                         <member>127.0.0.1</member>
+                    </member-list>
+               </tcp-ip>
+               <aws enabled="false"/>
+               <gcp enabled="false"/>
+               <azure enabled="false"/>
+               <kubernetes enabled="false"/>
+               <eureka enabled="false">
+                    <namespace>hazelcast</namespace>
+                    <self-registration>true</self-registration>
+               </eureka>
+               <discovery-strategies/>
+          </join>
+          <interfaces enabled="false">
+               <interface>127.0.0.1</interface>
+          </interfaces>
+          <ssl enabled="false"/>
+          <socket-interceptor enabled="false"/>
+          <failure-detector>
+               <icmp enabled="false">
+                    <ttl>255</ttl>
+                    <interval-milliseconds>1000</interval-milliseconds>
+                    <max-attempts>2</max-attempts>
+                    <timeout-milliseconds>1000</timeout-milliseconds>
+                    <fail-fast-on-startup>true</fail-fast-on-startup>
+                    <parallel-mode>true</parallel-mode>
+               </icmp>
+          </failure-detector>
+          <rest-api enabled="true">
+               <endpoint-group name="CLUSTER_READ" enabled="false"/>
+               <endpoint-group name="CLUSTER_WRITE" enabled="false"/>
+               <endpoint-group name="HEALTH_CHECK" enabled="true"/>
+               <endpoint-group name="PERSISTENCE" enabled="false"/>
+               <endpoint-group name="HOT_RESTART" enabled="false"/>
+               <endpoint-group name="WAN" enabled="false"/>
+               <endpoint-group name="DATA" enabled="false"/>
+               <endpoint-group name="CP" enabled="false"/>
+          </rest-api>
+          <memcache-protocol enabled="false"/>
+          <tpc-socket>
+               <port-range>11000-21000</port-range>
+               <receive-buffer-size-kb>128</receive-buffer-size-kb>
+               <send-buffer-size-kb>128</send-buffer-size-kb>
+          </tpc-socket>
+     </network>
+     <replicatedmap name="default">
+          <in-memory-format>OBJECT</in-memory-format>
+          <async-fillup>true</async-fillup>
+          <statistics-enabled>true</statistics-enabled>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+     </replicatedmap>
+     <map name="default">
+          <in-memory-format>BINARY</in-memory-format>
+          <statistics-enabled>true</statistics-enabled>
+          <per-entry-stats-enabled>false</per-entry-stats-enabled>
+          <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <time-to-live-seconds>0</time-to-live-seconds>
+          <max-idle-seconds>0</max-idle-seconds>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+          <read-backup-data>false</read-backup-data>
+          <metadata-policy>CREATE_ON_UPDATE</metadata-policy>
+          <eviction size="2147483647" max-size-policy="PER_NODE" eviction-policy="NONE"/>
+          <event-journal enabled="false">
+               <capacity>10000</capacity>
+               <time-to-live-seconds>0</time-to-live-seconds>
+          </event-journal>
+          <data-persistence enabled="false">
+               <fsync>false</fsync>
+          </data-persistence>
+          <map-store enabled="false" initial-mode="LAZY">
+               <write-coalescing>true</write-coalescing>
+               <offload>true</offload>
+               <write-delay-seconds>0</write-delay-seconds>
+               <write-batch-size>1</write-batch-size>
+          </map-store>
+          <tiered-store enabled="false">
+               <memory-tier>
+                    <capacity unit="MEGABYTES" value="256"/>
+               </memory-tier>
+               <disk-tier enabled="false" device-name="default-tiered-store-device"/>
+          </tiered-store>
+     </map>
+     <map name="__jet.*">
+          <in-memory-format>BINARY</in-memory-format>
+          <statistics-enabled>true</statistics-enabled>
+          <per-entry-stats-enabled>false</per-entry-stats-enabled>
+          <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <time-to-live-seconds>0</time-to-live-seconds>
+          <max-idle-seconds>0</max-idle-seconds>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.DiscardMergePolicy</merge-policy>
+          <read-backup-data>false</read-backup-data>
+          <metadata-policy>CREATE_ON_UPDATE</metadata-policy>
+          <eviction size="2147483647" max-size-policy="PER_NODE" eviction-policy="NONE"/>
+          <event-journal enabled="false">
+               <capacity>10000</capacity>
+               <time-to-live-seconds>0</time-to-live-seconds>
+          </event-journal>
+          <data-persistence enabled="false">
+               <fsync>false</fsync>
+          </data-persistence>
+          <map-store enabled="false" initial-mode="LAZY">
+               <write-coalescing>true</write-coalescing>
+               <offload>true</offload>
+               <write-delay-seconds>0</write-delay-seconds>
+               <write-batch-size>1</write-batch-size>
+          </map-store>
+          <tiered-store enabled="false">
+               <memory-tier>
+                    <capacity unit="MEGABYTES" value="256"/>
+               </memory-tier>
+               <disk-tier enabled="false" device-name="default-tiered-store-device"/>
+          </tiered-store>
+     </map>
+     <map name="__jet.results">
+          <in-memory-format>BINARY</in-memory-format>
+          <statistics-enabled>true</statistics-enabled>
+          <per-entry-stats-enabled>false</per-entry-stats-enabled>
+          <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <time-to-live-seconds>604800</time-to-live-seconds>
+          <max-idle-seconds>0</max-idle-seconds>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.DiscardMergePolicy</merge-policy>
+          <read-backup-data>false</read-backup-data>
+          <metadata-policy>CREATE_ON_UPDATE</metadata-policy>
+          <eviction size="2147483647" max-size-policy="PER_NODE" eviction-policy="NONE"/>
+          <event-journal enabled="false">
+               <capacity>10000</capacity>
+               <time-to-live-seconds>0</time-to-live-seconds>
+          </event-journal>
+          <data-persistence enabled="false">
+               <fsync>false</fsync>
+          </data-persistence>
+          <map-store enabled="false" initial-mode="LAZY">
+               <write-coalescing>true</write-coalescing>
+               <offload>true</offload>
+               <write-delay-seconds>0</write-delay-seconds>
+               <write-batch-size>1</write-batch-size>
+          </map-store>
+          <tiered-store enabled="false">
+               <memory-tier>
+                    <capacity unit="MEGABYTES" value="256"/>
+               </memory-tier>
+               <disk-tier enabled="false" device-name="default-tiered-store-device"/>
+          </tiered-store>
+     </map>
+     <map name="__jet.results.metrics">
+          <in-memory-format>BINARY</in-memory-format>
+          <statistics-enabled>true</statistics-enabled>
+          <per-entry-stats-enabled>false</per-entry-stats-enabled>
+          <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <time-to-live-seconds>604800</time-to-live-seconds>
+          <max-idle-seconds>0</max-idle-seconds>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.DiscardMergePolicy</merge-policy>
+          <read-backup-data>false</read-backup-data>
+          <metadata-policy>CREATE_ON_UPDATE</metadata-policy>
+          <eviction size="2147483647" max-size-policy="PER_NODE" eviction-policy="NONE"/>
+          <event-journal enabled="false">
+               <capacity>10000</capacity>
+               <time-to-live-seconds>0</time-to-live-seconds>
+          </event-journal>
+          <data-persistence enabled="false">
+               <fsync>false</fsync>
+          </data-persistence>
+          <map-store enabled="false" initial-mode="LAZY">
+               <write-coalescing>true</write-coalescing>
+               <offload>true</offload>
+               <write-delay-seconds>0</write-delay-seconds>
+               <write-batch-size>1</write-batch-size>
+          </map-store>
+          <tiered-store enabled="false">
+               <memory-tier>
+                    <capacity unit="MEGABYTES" value="256"/>
+               </memory-tier>
+               <disk-tier enabled="false" device-name="default-tiered-store-device"/>
+          </tiered-store>
+     </map>
+     <map name="__sql.catalog">
+          <in-memory-format>BINARY</in-memory-format>
+          <statistics-enabled>true</statistics-enabled>
+          <per-entry-stats-enabled>true</per-entry-stats-enabled>
+          <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
+          <backup-count>6</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <time-to-live-seconds>0</time-to-live-seconds>
+          <max-idle-seconds>0</max-idle-seconds>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.LatestUpdateMergePolicy</merge-policy>
+          <read-backup-data>true</read-backup-data>
+          <metadata-policy>CREATE_ON_UPDATE</metadata-policy>
+          <eviction size="2147483647" max-size-policy="PER_NODE" eviction-policy="NONE"/>
+          <event-journal enabled="false">
+               <capacity>10000</capacity>
+               <time-to-live-seconds>0</time-to-live-seconds>
+          </event-journal>
+          <data-persistence enabled="false">
+               <fsync>false</fsync>
+          </data-persistence>
+          <map-store enabled="false" initial-mode="LAZY">
+               <write-coalescing>true</write-coalescing>
+               <offload>true</offload>
+               <write-delay-seconds>0</write-delay-seconds>
+               <write-batch-size>1</write-batch-size>
+          </map-store>
+          <tiered-store enabled="false">
+               <memory-tier>
+                    <capacity unit="MEGABYTES" value="256"/>
+               </memory-tier>
+               <disk-tier enabled="false" device-name="default-tiered-store-device"/>
+          </tiered-store>
+     </map>
+     <queue name="default">
+          <statistics-enabled>true</statistics-enabled>
+          <max-size>10</max-size>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <empty-queue-ttl>-1</empty-queue-ttl>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+     </queue>
+     <multimap name="default">
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <statistics-enabled>true</statistics-enabled>
+          <binary>true</binary>
+          <value-collection-type>SET</value-collection-type>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+     </multimap>
+     <list name="default">
+          <statistics-enabled>true</statistics-enabled>
+          <max-size>2147483647</max-size>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+     </list>
+     <set name="default">
+          <statistics-enabled>true</statistics-enabled>
+          <max-size>2147483647</max-size>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+     </set>
+     <ringbuffer name="default">
+          <capacity>10000</capacity>
+          <time-to-live-seconds>0</time-to-live-seconds>
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <in-memory-format>BINARY</in-memory-format>
+          <ringbuffer-store enabled="false"/>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+     </ringbuffer>
+     <executor-service name="default">
+          <statistics-enabled>true</statistics-enabled>
+          <pool-size>16</pool-size>
+          <queue-capacity>0</queue-capacity>
+     </executor-service>
+     <durable-executor-service name="default">
+          <pool-size>16</pool-size>
+          <durability>1</durability>
+          <capacity>100</capacity>
+          <statistics-enabled>true</statistics-enabled>
+     </durable-executor-service>
+     <scheduled-executor-service name="default">
+          <pool-size>16</pool-size>
+          <durability>1</durability>
+          <capacity>100</capacity>
+          <capacity-policy>PER_NODE</capacity-policy>
+          <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+          <statistics-enabled>true</statistics-enabled>
+     </scheduled-executor-service>
+     <partition-group enabled="false" group-type="PER_MEMBER"/>
+     <cardinality-estimator name="default">
+          <backup-count>1</backup-count>
+          <async-backup-count>0</async-backup-count>
+          <merge-policy batch-size="100">HyperLogLogMergePolicy</merge-policy>
+     </cardinality-estimator>
+     <serialization>
+          <portable-version>0</portable-version>
+          <use-native-byte-order>false</use-native-byte-order>
+          <byte-order>BIG_ENDIAN</byte-order>
+          <enable-compression>false</enable-compression>
+          <enable-shared-object>true</enable-shared-object>
+          <allow-unsafe>false</allow-unsafe>
+          <allow-override-default-serializers>false</allow-override-default-serializers>
+          <check-class-def-errors>true</check-class-def-errors>
+          <compact-serialization/>
+     </serialization>
+     <reliable-topic name="default">
+          <statistics-enabled>true</statistics-enabled>
+          <read-batch-size>10</read-batch-size>
+          <topic-overload-policy>BLOCK</topic-overload-policy>
+     </reliable-topic>
+     <lite-member enabled="false"/>
+     <native-memory enabled="false" allocator-type="POOLED">
+          <capacity unit="MEGABYTES" value="512"/>
+          <min-block-size>16</min-block-size>
+          <page-size>4194304</page-size>
+          <metadata-space-percentage>12.5</metadata-space-percentage>
+          <persistent-memory enabled="false" mode="MOUNTED"/>
+     </native-memory>
+     <persistence enabled="false">
+          <base-dir>/opt/hazelcast/persistence</base-dir>
+          <parallelism>1</parallelism>
+          <validation-timeout-seconds>120</validation-timeout-seconds>
+          <data-load-timeout-seconds>900</data-load-timeout-seconds>
+          <cluster-data-recovery-policy>FULL_RECOVERY_ONLY</cluster-data-recovery-policy>
+          <auto-remove-stale-data>true</auto-remove-stale-data>
+          <rebalance-delay-seconds>0</rebalance-delay-seconds>
+          <encryption-at-rest enabled="false">
+               <key-size>0</key-size>
+               <algorithm>AES/CBC/PKCS5Padding</algorithm>
+               <salt>****</salt>
+               <secure-store/>
+          </encryption-at-rest>
+     </persistence>
+     <dynamic-configuration>
+          <persistence-enabled>false</persistence-enabled>
+          <backup-dir>/opt/hazelcast/dynamic-configuration-backups</backup-dir>
+          <backup-count>5</backup-count>
+     </dynamic-configuration>
+     <local-device name="default-tiered-store-device">
+          <base-dir>/opt/hazelcast/tiered-store</base-dir>
+          <capacity unit="GIGABYTES" value="256"/>
+          <block-size>4096</block-size>
+          <read-io-thread-count>4</read-io-thread-count>
+          <write-io-thread-count>4</write-io-thread-count>
+     </local-device>
+     <flake-id-generator name="default">
+          <prefetch-count>100</prefetch-count>
+          <prefetch-validity-millis>600000</prefetch-validity-millis>
+          <epoch-start>1514764800000</epoch-start>
+          <node-id-offset>0</node-id-offset>
+          <bits-sequence>6</bits-sequence>
+          <bits-node-id>16</bits-node-id>
+          <allowed-future-millis>15000</allowed-future-millis>
+          <statistics-enabled>true</statistics-enabled>
+     </flake-id-generator>
+     <crdt-replication>
+          <replication-period-millis>1000</replication-period-millis>
+          <max-concurrent-replication-targets>1</max-concurrent-replication-targets>
+     </crdt-replication>
+     <pn-counter name="default">
+          <replica-count>2147483647</replica-count>
+          <statistics-enabled>true</statistics-enabled>
+     </pn-counter>
+     <cp-subsystem>
+          <cp-member-count>3</cp-member-count>
+          <group-size>3</group-size>
+          <session-time-to-live-seconds>300</session-time-to-live-seconds>
+          <session-heartbeat-interval-seconds>5</session-heartbeat-interval-seconds>
+          <missing-cp-member-auto-removal-seconds>14400</missing-cp-member-auto-removal-seconds>
+          <fail-on-indeterminate-operation-state>false</fail-on-indeterminate-operation-state>
+          <persistence-enabled>false</persistence-enabled>
+          <base-dir>/opt/hazelcast/cp-data</base-dir>
+          <data-load-timeout-seconds>120</data-load-timeout-seconds>
+          <cp-member-priority>0</cp-member-priority>
+          <raft-algorithm>
+               <leader-election-timeout-in-millis>2000</leader-election-timeout-in-millis>
+               <leader-heartbeat-period-in-millis>5000</leader-heartbeat-period-in-millis>
+               <max-missed-leader-heartbeat-count>5</max-missed-leader-heartbeat-count>
+               <append-request-max-entry-count>100</append-request-max-entry-count>
+               <commit-index-advance-count-to-snapshot>10000</commit-index-advance-count-to-snapshot>
+               <uncommitted-entry-count-to-reject-new-appends>100</uncommitted-entry-count-to-reject-new-appends>
+               <append-request-backoff-timeout-in-millis>100</append-request-backoff-timeout-in-millis>
+          </raft-algorithm>
+          <semaphores/>
+          <locks/>
+     </cp-subsystem>
+     <metrics enabled="true">
+          <management-center enabled="true">
+               <retention-seconds>5</retention-seconds>
+          </management-center>
+          <jmx enabled="true"/>
+          <collection-frequency-seconds>5</collection-frequency-seconds>
+     </metrics>
+     <instance-tracking enabled="false"/>
+     <sql>
+          <statement-timeout-millis>0</statement-timeout-millis>
+          <catalog-persistence-enabled>false</catalog-persistence-enabled>
+     </sql>
+     <jet enabled="true" resource-upload-enabled="true">
+          <cooperative-thread-count>4</cooperative-thread-count>
+          <flow-control-period>100</flow-control-period>
+          <backup-count>1</backup-count>
+          <scale-up-delay-millis>10000</scale-up-delay-millis>
+          <lossless-restart-enabled>false</lossless-restart-enabled>
+          <max-processor-accumulated-records>9223372036854775807</max-processor-accumulated-records>
+          <edge-defaults>
+               <queue-size>1024</queue-size>
+               <packet-size-limit>16384</packet-size-limit>
+               <receive-window-multiplier>3</receive-window-multiplier>
+          </edge-defaults>
+     </jet>
+     <auditlog enabled="false"/>
+     <user-code-deployment enabled="false">
+          <class-cache-mode>ETERNAL</class-cache-mode>
+          <provider-mode>LOCAL_AND_CACHED_CLASSES</provider-mode>
+     </user-code-deployment>
+     <integrity-checker enabled="false"/>
+     <tpc enabled="false">
+          <eventloop-count>4</eventloop-count>
+     </tpc>
+</hazelcast>
