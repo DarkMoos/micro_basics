@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  master:
+    build: ./master
+    ports:
+      - "8000:8000"
+    environment:
+      - SECONDARY_HOSTS=secondary1:8001,secondary2:8001
+    networks:
+      - replicated_log_net
+
+  secondary1:
+    build: ./secondary
+    environment:
+      - REPLICATION_DELAY_SECONDS=0
+    networks:
+      - replicated_log_net
+  
+  secondary2:
+    build: ./secondary
+    environment:
+      - REPLICATION_DELAY_SECONDS=3
+    networks:
+      - replicated_log_net
+
+networks:
+  replicated_log_net:
